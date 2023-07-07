@@ -43,8 +43,10 @@ window.onload = function() {
 
 }
 
-function update(){
+function update(){    
     requestAnimationFrame(update);
+    //rendo il player pulito
+    context.clearRect(0,0, board.width, board.height);
 
     //player
     context.fillStyle = "lightgreen";
@@ -54,11 +56,23 @@ function update(){
 
 }
 
+function outOfBounds(xPosition){
+    return (xPosition < 0 || xPosition + playerWidth > boardWidth);
+}
+
 function movePlayer(e) {
     if (e.code == "ArrowLeft"){
-        player.x -= playerVelocityX;
+        //player.x -= playerVelocityX;
+        let nextPlayerX = player.x - player.velocityX; 
+        if (!outOfBounds(nextPlayerX)){
+            player.x = nextPlayerX; 
+        }
     }
     else if (e.code == "ArrowRight"){
-        player.x += player.velocityX;
+        //player.x += player.velocityX;
+        let nextPlayerX = player.x + playerVelocityX;
+        if (!outOfBounds(nextPlayerX)){
+            player.x = nextPlayerX; 
+        }
     }
 }
