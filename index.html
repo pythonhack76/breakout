@@ -8,8 +8,13 @@
     <link rel="stylesheet" href="breakout.css" />
 </head>
 <body>
+    <div id="startScreen" style="display: flex; align-items: center; justify-content: center; height: 100%; background-color: black;">
+        <button id="startButton" style="font-size: 24px; padding: 12px 24px;">PRESS START</button>
+      </div>
+      <div id="gameOverText" style="display: none; font-size: 48px; color: red; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">GAME OVER</div>
+
     <h1>Breakout</h1>
-    <canvas id="board"></canvas>
+    <canvas id="board"></canvas>  
     <h6>another simple game</h6>
     <audio id="hitSound">
         <source src="./assets/images/sounds/explosion.wav" type="audio/mp3">

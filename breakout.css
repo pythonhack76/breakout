@@ -9,3 +9,16 @@ body {
     border-left: 5px solid skyblue;
     border-right: 5px solid skyblue; 
 }
+
+#startScreen {
+    display: none;
+  }
+
+  #gameOverText {
+    /* Aggiungi gli stili desiderati qui */
+    font-size: larger;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    color:brown;
+  }

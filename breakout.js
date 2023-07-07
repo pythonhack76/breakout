@@ -58,9 +58,10 @@ let blockY = 45;
 let score = 0;
 let gameOver = false; 
 
-let explosion = "./assets/images/sounds/explosion.wav";
 
 window.onload = function() {
+
+   
         board = document.getElementById("board");
         board.height = boardHeight;
         board.width = boardWidth;
@@ -78,8 +79,16 @@ window.onload = function() {
 
 }
 
-function update(){    
+function update(){   
+
     requestAnimationFrame(update);
+    
+    // Sezione in cui gestisci il game over
+if (gameOver) {
+    const gameOverText = document.getElementById('gameOverText');
+    gameOverText.style.display = 'block'; // Mostra la scritta "GAME OVER"
+    // Eventuali altre operazioni legate al game over
+  }
     //rendo il player pulito
     context.clearRect(0,0, board.width, board.height);
 
@@ -139,6 +148,8 @@ function update(){
       }
       context.font = "20px sans-serif";
       context.fillText(score, 10, 25);
+
+      context.fillRect(gameOver, 20, 40);
 }
 
 function outOfBounds(xPosition){
