@@ -1,9 +1,12 @@
 //board
-
 let board;
 let boardWidth = 500;
 let boardHeight = 500;
 let context; 
+
+// Aggiungi questa riga all'inizio del tuo codice
+let hitSound = new Audio("./assets/sounds/explosion.wav");
+
 
 //credits
 let author = "spritecoder";
@@ -25,7 +28,6 @@ let player = {
 }
 
 //ball
-
 let ballWidth = 10;
 let ballHeight = 10;
 let ballVelocityX = 3;
@@ -50,9 +52,13 @@ let blockMaxRows = 10; //limit how many rows
 let blockCount = 0; 
 
 //starting block corner top left
-
 let blockX = 15;
 let blockY = 45;
+
+let score = 0;
+let gameOver = false; 
+
+let explosion = "./assets/images/sounds/explosion.wav";
 
 window.onload = function() {
         board = document.getElementById("board");
@@ -103,10 +109,12 @@ function update(){
     //bounce the ball off palyer paddle
     if (topCollision(ball, player) || bottomCollision(ball, player)) {
         ball.velocityY *= -1; //flip y direction up or down
+        hitSound.play(); // Riproduci l'effetto sonoro
     }
 
     else if (leftCollision(ball, player) || rightCollision(ball, player)) {
         ball.velocityX *= -1; //flip y direction up or down
+        hitSound.play(); // Riproduci l'effetto sonoro
     }
 
         //blocks
@@ -114,9 +122,23 @@ function update(){
         for (let i = 0; i < blockArray.length; i++ ){
             let block = blockArray[i];
             if (!block.break){
+                if (topCollision(ball, block) || bottomCollision(ball, block)){
+                    block.break = true;
+                    ball.velocityY *= -1; // flip y direction up ord down
+                    blockCount -= 1;
+                    score += 100;
+                }
+                else if ( leftCollision(ball, block) || rightCollision(ball, block)){
+                    block.break = true;
+                    ballVelocityX *= -1; //flip x direction lfet or right
+                    blockCount -= 1;
+                    score += 100; 
+                }
                 context.fillRect(block.x, block.y, block.width, block.height);
             }
       }
+      context.font = "20px sans-serif";
+      context.fillText(score, 10, 25);
 }
 
 function outOfBounds(xPosition){
