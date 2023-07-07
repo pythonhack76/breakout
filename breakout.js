@@ -6,6 +6,7 @@ let context;
 
 // Aggiungi questa riga all'inizio del tuo codice
 let hitSound = new Audio("./assets/sounds/explosion.wav");
+let gameOverSound = new Audio("./assets/sounds/GameOver.wav"); 
 
 
 //credits
@@ -84,11 +85,10 @@ function update(){
     requestAnimationFrame(update);
     
     // Sezione in cui gestisci il game over
-if (gameOver) {
-    const gameOverText = document.getElementById('gameOverText');
-    gameOverText.style.display = 'block'; // Mostra la scritta "GAME OVER"
-    // Eventuali altre operazioni legate al game over
-  }
+    if (gameOver){
+        return;
+    }
+
     //rendo il player pulito
     context.clearRect(0,0, board.width, board.height);
 
@@ -104,15 +104,19 @@ if (gameOver) {
     //bounce ball off walls
     if (ball.y <= 0){
         //se la palla tocca il top del canvas
-        ball.velocityX *= -1; //reverse direction
+        ball.velocityY *= -1; //reverse direction
     }
     else if ( ball.x <= 0 || (ball.x + ball.width) >= boardWidth) {
         // se la palla tocca sinistra o destra del canvas
         ball.velocityX *= -1; //reverse direction 
     }
     else if (ball.y + ball.height >= boardHeight){
-        // if 
+        // if ball tocca il bottom del canvas
         //game over
+        gameOverSound.play();
+        context.font = "20px sans-serif";
+        context.fillText("GAME OVER: Press 'SPACE' to restart", 80, 400);
+        gameOver = true; 
     }
 
     //bounce the ball off palyer paddle
@@ -157,6 +161,13 @@ function outOfBounds(xPosition){
 }
 
 function movePlayer(e) {
+    if (gameOver){
+        if (e.code == "Space"){
+            resetGame(); 
+        }
+    }
+
+
     if (e.code == "ArrowLeft"){
         //player.x -= playerVelocityX;
         let nextPlayerX = player.x - player.velocityX; 
@@ -215,4 +226,27 @@ function createBlocks() {
     }
 
     blockCount = blockArray.length; 
+}
+
+function resetGame() {
+    gameOver = false; 
+    player = {
+        x : boardWidth/2 - playerWidth/2,
+        y : boardHeight - playerHeight - 5,
+        width : playerWidth,
+        height : playerHeight,
+        velocityX : playerVelocityX
+    
+    }
+    ball = {
+        x : boardWidth/2,
+        y: boardHeight/2, 
+        width : ballWidth,
+        height : ballHeight,
+        velocityX : ballVelocityX,
+        velocityY : ballVelocityY
+    }
+    blockArray = [];
+    score = 0;
+    createBlocks(); 
 }
